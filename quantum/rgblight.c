@@ -401,11 +401,26 @@ void rgblight_setrgb(uint8_t r, uint8_t g, uint8_t b) {
 
 void rgblight_setrgb_at(uint8_t r, uint8_t g, uint8_t b, uint8_t index) {
   if (!rgblight_config.enable || index >= RGBLED_NUM) { return; }
-
+uint8_t i;
+  for(i=0;i<index;i++);
+  {
   led[index].r = r;
   led[index].g = g;
   led[index].b = b;
+  }
   rgblight_set();
+}
+
+void rgblight_setrgb_single(uint8_t r, uint8_t g, uint8_t b, uint8_t index) {
+  if (!rgblight_config.enable || index >= RGBLED_NUM) { return; }
+uint8_t i;
+  for(i=0;i<index;i++);
+  {
+  led[index].r = r;
+  led[index].g = g;
+  led[index].b = b;
+  }
+  //rgblight_set();		//not called to allow for a single refresh when using many different individual colours. MUST BE CALLED AFTER TO REGRESH ALL LEDS. 
 }
 
 void rgblight_sethsv_at(uint16_t hue, uint8_t sat, uint8_t val, uint8_t index) {
@@ -419,22 +434,34 @@ void rgblight_sethsv_at(uint16_t hue, uint8_t sat, uint8_t val, uint8_t index) {
 #ifndef RGBLIGHT_CUSTOM_DRIVER
 void rgblight_set(void) {
   if (rgblight_config.enable) {
-    #ifdef RGBW
+    
+	#ifdef RGBW
       ws2812_setleds_rgbw(led, RGBLED_NUM);
-    #else
+    #elif defined APA102
+	  apa102_setleds(led, RGBLED_NUM);
+	#else
       ws2812_setleds(led, RGBLED_NUM);
     #endif
+
+	
+	
   } else {
     for (uint8_t i = 0; i < RGBLED_NUM; i++) {
       led[i].r = 0;
       led[i].g = 0;
       led[i].b = 0;
     }
+		
     #ifdef RGBW
       ws2812_setleds_rgbw(led, RGBLED_NUM);
-    #else
+	#elif defined APA102
+	  apa102_setleds(led, RGBLED_NUM);
+	#else
       ws2812_setleds(led, RGBLED_NUM);
     #endif
+	
+	
+	
   }
 }
 #endif

@@ -23,10 +23,14 @@
 #ifndef RGBLIGHT_TYPES
 #define RGBLIGHT_TYPES
 
+
 #include <avr/io.h>
 
 #ifdef RGBW
   #define LED_TYPE struct cRGBW
+#elif defined APA102
+  #define LED_TYPE struct cBGR
+  
 #else
   #define LED_TYPE struct cRGB
 #endif
@@ -38,7 +42,7 @@
  * cRGB:     RGB  for WS2812S/B/C/D, SK6812, SK6812Mini, SK6812WWA, APA104, APA106
  * cRGBW:    RGBW for SK6812RGBW
  */
-
+struct cBGR { uint8_t b; uint8_t g; uint8_t r; };
 struct cRGB  { uint8_t g; uint8_t r; uint8_t b; };
 struct cRGBW { uint8_t g; uint8_t r; uint8_t b; uint8_t w;};
 
