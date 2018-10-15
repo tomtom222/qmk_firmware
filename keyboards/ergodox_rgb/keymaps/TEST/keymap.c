@@ -105,7 +105,7 @@ Colour	RED			  +-----+-----+-----+-----+-----+-----+-----+
 
 void matrix_init_user(void) {
 	
-	rgblight_setrgb(255, 0, 0);
+	rgblight_setrgb(0, 0, 255);
 	
 }
 
@@ -117,23 +117,12 @@ void matrix_scan_user(void) {
 		
 		switch (layer){
 			case QWERTY:								//Sets the colour of QWERTY when that layer is called
-			rgblight_setrgb(255, 255, 255);					//This codes calls the colour for the layer
+			rgblight_setrgb(0, 0, 255);					//This codes calls the colour for the layer
 			
 			break;
-			case FUNCTION:								//Sets the colour of FUNCTION when that layer is called
-			rgblight_setrgb(0, 0, 255);
 			
-			break;
-			case COLEMAK:								//Sets the colour of COLEMAK when that layer is called
-			rgblight_setrgb(0, 255, 0);
-		    
-			break;
-			case MEDIAMOUSE:							//Sets the colour of MEDIA when that layer is called
-			rgblight_setrgb(255, 100, 0);
-			
-			break;
 			default:									//Sets the default colour, this might show upon booting
-			rgblight_setrgb(255, 255, 255);
+			rgblight_setrgb(0, 0, 255);
 			
 			break;
 		}
@@ -150,7 +139,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case KC_BRUP:
       if (record->event.pressed) {
         apa102_brightness++;						// Add brightness when key is pressed
-		rgblight_setrgb(255, 255, 255);				// Sets leds to layer colour where the key press is being called from
+		rgblight_setrgb(0, 0, 255);					// Sets leds to layer colour where the key press is being called from
       } else {										// this is needed to update the brightness so you can see what you're changing
         
       }
@@ -158,7 +147,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case KC_BRDW:
       if (record->event.pressed) {
        apa102_brightness--;							// Subtract brightness when key is pressed
-	   rgblight_setrgb(255, 255, 255);				// Same as above
+	   rgblight_setrgb(0, 0, 255);					// Same as above
       } else {
         
       }
@@ -168,12 +157,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 	case KC_S1: 
 		if (record->event.pressed) {
+			apa102_brightness++;					// Add brightness when key is pressed
+			rgblight_setrgb(0, 0, 255);
 			SEND_STRING("S1"); 
 			return false;
 		}
 
 	case KC_S2: 
 		if (record->event.pressed) {
+			apa102_brightness--;					// Subtract brightness when key is pressed
+	  	 	rgblight_setrgb(0, 0, 255);
 			SEND_STRING("S2"); 
 			return false;
 		}
